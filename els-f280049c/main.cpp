@@ -31,6 +31,7 @@
 #include "EEPROM.h"
 #include "StepperDrive.h"
 #include "Encoder.h"
+#include "hd44780.h"
 
 #include "Core.h"
 #include "UserInterface.h"
@@ -72,6 +73,11 @@ Core core(&encoder, &stepperDrive);
 
 // User interface
 UserInterface userInterface(&controlPanel, &core, &feedTableFactory);
+
+#if DISPLAY_TYPE==2
+// LCD HD44780
+LCD lcd;
+#endif
 
 void main(void)
 {
@@ -123,7 +129,10 @@ void main(void)
     eeprom.initHardware();
     stepperDrive.initHardware();
     encoder.initHardware();
+    lcd.initHardware(LCD_DISP_ON);
 
+    lcd.gotoxy(0,0);
+    lcd.print("Hello");
     // Enable CPU INT1 which is connected to CPU-Timer 0
     IER |= M_INT1;
 

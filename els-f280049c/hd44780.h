@@ -2,7 +2,10 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Haris Andrianakis - candrian.gr
+// Copyright (c) 2020
+// Haris Andrianakis
+// Website: www.candrian.gr
+// haris@candrian.gr
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
