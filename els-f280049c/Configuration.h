@@ -27,9 +27,19 @@
 #ifndef __CONFIGURATION_H
 #define __CONFIGURATION_H
 
+//================================================================================
+//                                  Connections
+//  ==== Encoder ====
+// Green    -> J12 1A
+// White    -> J12 1B
+// Red      -> J12 +5VD
+// Black    -> J12 GND
 
-
-
+//  ==== Motor Controller ====
+// All(-)       -> pin.60 (GND)
+// Pulse(+)     -> pin.80
+// Direction(+) -> pin.79
+// Enable(+)    -> pin.78
 //================================================================================
 //                                  LEADSCREW
 //
@@ -40,11 +50,12 @@
 //================================================================================
 
 // For Imperial leadscrews: pitch in Threads Per Inch (TPI)
-#define LEADSCREW_TPI 12
+//#define LEADSCREW_TPI 12
 
 // For metric leadscrews: pitch in hundredths of a millimeter (HMM)
 // Example: 200hmm = 2mm
-//#define LEADSCREW_HMM 200
+// Mini Lathe leadscrew pitch 1.5mm
+#define LEADSCREW_HMM 150
 
 
 
@@ -64,6 +75,7 @@
 //================================================================================
 
 // Steps and microsteps
+// If you use 3 (motor) to 1 (lead screw) ration then microsteps can be defined to 3*8
 #define STEPPER_MICROSTEPS 8
 #define STEPPER_RESOLUTION 200
 
@@ -74,7 +86,7 @@
 #define INVERT_ALARM_PIN true
 
 // Enable servo alarm feedback
-#define USE_ALARM_PIN
+//#define USE_ALARM_PIN
 
 
 
@@ -91,7 +103,8 @@
 //================================================================================
 
 // Encoder resolution (counts per revolution)
-#define ENCODER_RESOLUTION 4096
+// We use a 600P/R
+#define ENCODER_RESOLUTION 2400
 
 // Which encoder input to use
 #define ENCODER_USE_EQEP1
