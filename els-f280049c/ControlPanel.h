@@ -29,6 +29,7 @@
 
 #include "F28x_Project.h"
 #include "SPIBus.h"
+#include "hd44780.h"
 
 
 #define ZERO    0b1111110000000000 // 0
@@ -72,6 +73,9 @@
 #define LETTER_Z 0b1101001000000000
 
 #define DASH 0b0000001000000000
+
+#define ON  0
+#define OFF 1
 
 #define LED_TPI 1
 #define LED_INCH (1<<1)
@@ -137,6 +141,11 @@ private:
     // current key states
     KEY_REG keys;
 
+#if DISPLAY_TYPE==2
+    // LCD HD44780
+    LCD lcd;
+#endif
+
     // current override message, or NULL if none
     const Uint16 *message;
 
@@ -159,6 +168,10 @@ private:
     Uint16 reverse_byte(Uint16 x);
     void initSpi();
     void configureSpiBus(void);
+
+#if DISPLAY_TYPE==2
+    void updateLCD(void);
+#endif
 
 public:
     ControlPanel(SPIBus *spiBus);

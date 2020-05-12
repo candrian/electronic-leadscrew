@@ -130,9 +130,8 @@ void main(void)
     stepperDrive.initHardware();
     encoder.initHardware();
     lcd.initHardware(LCD_DISP_ON);
+    lcd.clear();
 
-    lcd.gotoxy(0,0);
-    lcd.print("Hello");
     // Enable CPU INT1 which is connected to CPU-Timer 0
     IER |= M_INT1;
 

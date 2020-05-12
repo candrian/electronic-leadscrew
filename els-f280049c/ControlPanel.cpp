@@ -25,6 +25,7 @@
 
 
 #include "ControlPanel.h"
+#include "stdlib.h"
 
 // Time delay to allow CS (STB) line to reach high state and be registered
 #define CS_RISE_TIME_US 5
@@ -180,6 +181,7 @@ void ControlPanel :: decomposeRPM()
         this->sevenSegmentData[i] = (rpm == 0 && i != 3) ? 0 : lcd_char(rpm % 10);
         rpm = rpm / 10;
     }
+
 }
 
 void ControlPanel :: decomposeValue()
@@ -193,6 +195,38 @@ void ControlPanel :: decomposeValue()
         }
     }
 }
+
+#if DISPLAY_TYPE==2
+void ControlPanel :: updateLCD(void) {
+
+    char *temp;
+    ltoa(rpm, temp, 10);    // Convert int RPM to characters (10 means decimal)
+
+    lcd.gotoxy(8,1);
+    lcd.print("RPM:");
+    lcd.print("    ");      // Clear previous RPM
+    lcd.gotoxy(12,1);
+    lcd.print(temp);
+/*
+    if( this->value != NULL ) {
+        lcd.gotoxy(7, 0);
+        for(int i=0; i < 4; i++ ) lcd.printChar(value[i]+0x30);
+    }
+*/
+    lcd.gotoxy(13, 0);
+    if ( leds.bit.TPI==ON ) lcd.print("TPI ");
+    if ( leds.bit.INCH==ON ) lcd.print("INCH");
+    if ( leds.bit.MM==ON ) lcd.print("MM  ");
+    lcd.gotoxy(0, 0);
+    if ( leds.bit.THREAD==ON ) lcd.print("THREAD:");
+    if ( leds.bit.FEED==ON ) lcd.print("FEED:  ");
+    lcd.gotoxy(0, 1);
+    lcd.print("DIR:");
+    if ( leds.bit.REVERSE==ON ) lcd.print("REV");
+    if ( leds.bit.FORWARD==ON ) lcd.print("FW ");
+
+}
+#endif
 
 KEY_REG ControlPanel :: readKeys(void)
 {
@@ -257,12 +291,15 @@ void ControlPanel :: setBrightness( Uint16 brightness )
 
 void ControlPanel :: refresh()
 {
-    configureSpiBus();
 
+#if DISPLAY_TYPE==1
+    configureSpiBus();
     decomposeRPM();
     decomposeValue();
-
     sendData();
+#else
+    updateLCD();
+#endif
 }
 
 
